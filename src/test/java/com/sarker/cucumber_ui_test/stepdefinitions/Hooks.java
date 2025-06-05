@@ -1,5 +1,6 @@
 package com.sarker.cucumber_ui_test.stepdefinitions;
 
+import com.sarker.cucumber_ui_test.pages.BasePage;
 import com.sarker.cucumber_ui_test.utils.ConfigReader;
 import com.sarker.cucumber_ui_test.utils.TestContext;
 import com.sarker.cucumber_ui_test.utils.WebDriverManagerUtil;
@@ -13,7 +14,6 @@ import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Paths;
 
 public class Hooks {
 

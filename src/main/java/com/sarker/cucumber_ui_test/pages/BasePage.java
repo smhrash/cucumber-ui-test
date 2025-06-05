@@ -1,6 +1,7 @@
 package com.sarker.cucumber_ui_test.pages;
 
 import com.sarker.cucumber_ui_test.utils.ConfigReader;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.PageFactory;
@@ -20,22 +21,16 @@ public class BasePage {
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(30));
     }
 
-    public void navigateToTheHomepage() {
-        String url = ConfigReader.getBaseUrl();
-        System.out.println("Navigating to: " + url);
-        driver.get(url);
-    }
-
     public String getPageTitle() {
         return driver.getTitle();
     }
 
-    protected void waitForElement(WebElement element) {
+    protected void waitForElementToBeVisible(WebElement element) {
         wait.until(ExpectedConditions.visibilityOf(element));
     }
 
-    protected void clickWhenReady(WebElement element) {
-        wait.until(ExpectedConditions.elementToBeClickable(element)).click();
+    protected void waitForElementToBeClickable(WebElement element) {
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 
     protected void waitForTitleToContain(String titlePart) {
@@ -44,5 +39,9 @@ public class BasePage {
 
     protected void waitForUrlToContain(String partialUrl) {
         wait.until(ExpectedConditions.urlContains(partialUrl));
+    }
+
+    public void scrollToTheElement(WebElement element) {
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({ behavior: 'smooth', block: 'center' });", element);
     }
 }

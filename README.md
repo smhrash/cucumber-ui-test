@@ -7,6 +7,8 @@ This project is a Java-based UI test automation framework using:
 * **TestNG** for test execution
 * **Log4j** for logging
 * **PicoContainer** for dependency injection
+* **Maven Cucumber Reporting** for rich HTML reports
+* **Jenkins** for CI/CD integration
 
 ## 📁 Project Structure
 
@@ -21,7 +23,7 @@ This project is a Java-based UI test automation framework using:
 │       └── java
 │           └── com.sarker.cucumber_ui_test
 │               ├── stepdefinitions
-│               └── runners
+│               └── testrunners
 │       └── resources
 │           └── features
 ├── pom.xml
@@ -34,8 +36,9 @@ This project is a Java-based UI test automation framework using:
 * Cross-browser support (Chrome, Firefox, Edge, Safari)
 * Configurable environments via `config.{env}.properties`
 * Explicit waits with WebDriverWait
-* Proper WebDriver management with `TestContext`
+* Screenshot capture on failure
 * Scalable Page Object Model (POM)
+* Integrated with Jenkins for continuous test execution
 
 ## ⚙️ How to Run Tests
 
@@ -43,17 +46,22 @@ This project is a Java-based UI test automation framework using:
 
 ```
 mvn clean install
+
+```
+### 2. Execute testcases and generate report
+
+```
+mvn clean verify
+
 ```
 
-### 2. Run with TestNG
+### 3. Run with TestNG
 
 ```
 mvn test
 ```
 
-Or via IntelliJ/Eclipse using `testng.xml`.
-
-### 3. Set environment (optional)
+### 4. Set environment (optional)
 
 ```
 mvn test -Denv=qa
@@ -86,31 +94,47 @@ base.url=https://www.selenium.dev/
 
 * Selenium Java
 * TestNG
-* Cucumber Java
-* Cucumber TestNG
+* Cucumber Java & TestNG
 * PicoContainer
 * Log4j
+* Maven Cucumber Reporting
 
-## 🖼️ Screenshots on Failure
+## 🖼️ Cucumber HTML Reports
 
-If a test scenario fails, a screenshot is automatically captured and saved to the `screenshots/` directory. To enable this:
+### Local Maven Execution:
 
-* The `@After` hook in `Hooks.java` uses `TakesScreenshot`.
-* Screenshots are named based on the scenario title and saved as `.png` files.
-* Ensure the `screenshots/` directory is created (automatically handled).
-
-You can find them in:
+The report is generated after running:
 
 ```
-screenshots/<failed_scenario_name>.png
+mvn clean verify
 ```
+
+* JSON Output: `target/cucumber-reports.json`
+* HTML Report Output: `target/cucumber-html-reports/overview-features.html`
+
+### Jenkins Configuration:
+
+To see the same HTML report in Jenkins:
+
+1. **Install Plugin**: Install `HTML Publisher Plugin` in Jenkins.
+2. **Configure Post-build Action**:
+
+    * Go to your Jenkins job > Configure.
+    * Add **Post-build Action** > **Publish HTML reports**.
+    * Set:
+
+        * **HTML directory to archive**: `target/cucumber-html-reports`
+        * **Index page\[s]**: `overview-features.html`
+        * **Report title**: `Cucumber Test Report`
+3. **Build**: Execute the job.
+4. **View Report**: Click **Cucumber Test Report** link on the left panel of your job page.
 
 ## 📌 Notes
 
-* Ensure `chromedriver` or respective browser drivers are in your system path.
-* Use `WebDriverManager` if preferred to avoid managing driver binaries manually.
+* Make sure Maven is available on the Jenkins server path.
+* Ensure Jenkins executes the correct `mvn clean verify` goal.
+* If your report is not visible, validate the JSON file is created in the correct path.
 
 ## 📃 License
 
 This project is for educational/demo purposes and not licensed for production use.
-# cucumber-ui-test
